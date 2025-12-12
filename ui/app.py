@@ -282,19 +282,23 @@ if run_button:
             status_text.text("🎨 Rendering evaluation report...")
             progress_bar.progress(90, text="🎨 Rendering evaluation report... (90%)")
             
+            # Ensure metrics are numeric
+            latency_ms = float(metrics['latency']) if isinstance(metrics['latency'], (str, int, float)) else 0
+            cost_usd = float(metrics['cost']) if isinstance(metrics['cost'], (str, int, float)) else 0
+            
             result = {
                 "generated_response": generated_response,
-                "relevance_score": relevance,
-                "completeness_score": completeness,
-                "accuracy_score": accuracy,
-                "hallucinations": hallucinations,
-                "latency_ms": metrics['latency'],
-                "cost_usd": metrics['cost'],
+                "relevance_score": int(relevance),
+                "completeness_score": int(completeness),
+                "accuracy_score": int(accuracy),
+                "hallucinations": hallucinations if isinstance(hallucinations, list) else [],
+                "latency_ms": latency_ms,
+                "cost_usd": cost_usd,
                 "retrieved_context": [
                     {
                         "text": ctx.text,
                         "source_url": ctx.source_url,
-                        "similarity_score": ctx.similarity_score
+                        "similarity_score": float(ctx.similarity_score)
                     } for ctx in retrieved_context
                 ],
                 "prompt_used": prompt,
@@ -325,7 +329,7 @@ if run_button:
                     result["accuracy_score"]
                 ]
             })
-            st.dataframe(scores_df, width='stretch')
+            st.dataframe(scores_df, use_container_width=True)
             
             # 2. Generated Response
             st.markdown("### 💬 Generated Response")
@@ -338,14 +342,17 @@ if run_button:
             
             # 4. Performance Metrics
             st.markdown("### ⏱️ Performance Metrics")
-            metrics_df = pd.DataFrame({
-                "Metric": ["Latency", "Cost"],
-                "Value": [
-                    f"{result['latency_ms']:.2f} ms",
-                    f"${result['cost_usd']:.4f}"
-                ]
-            })
-            st.dataframe(metrics_df, width='stretch')
+            try:
+                metrics_df = pd.DataFrame({
+                    "Metric": ["Latency", "Cost"],
+                    "Value": [
+                        f"{float(result['latency_ms']):.2f} ms",
+                        f"${float(result['cost_usd']):.4f}"
+                    ]
+                })
+                st.dataframe(metrics_df, use_container_width=True)
+            except Exception as e:
+                st.warning(f"⚠️ Could not display metrics: {str(e)}")
             
             # 5. Hallucinations
             st.markdown("### ⚠️ Detected Hallucinations")
@@ -353,7 +360,7 @@ if run_button:
                 hal_df = pd.DataFrame({
                     "Hallucination": result["hallucinations"]
                 })
-                st.dataframe(hal_df, width='stretch')
+                st.dataframe(hal_df, use_container_width=True)
             else:
                 st.success("✅ No hallucinations detected")
             
@@ -369,7 +376,7 @@ if run_button:
                         "Context Text": ctx['text'][:100] + "..." if len(ctx['text']) > 100 else ctx['text']
                     })
                 context_df = pd.DataFrame(context_data)
-                st.dataframe(context_df, width='stretch', height=400)
+                st.dataframe(context_df, use_container_width=True, height=400)
                 
                 # Option to expand and view full context
                 st.markdown("#### Full Context Details")
@@ -393,5 +400,9 @@ if run_button:
                 st.json(result)
 
         except Exception as e:
-            st.error(f"🚨 Error connecting to backend: {e}")
+            import traceback
+            error_msg = f"{type(e).__name__}: {str(e)}"
+            st.error(f"🚨 Error during evaluation: {error_msg}")
+            with st.expander("📋 Error Details"):
+                st.code(traceback.format_exc())
             progress_bar.progress(0, text="❌ Error occurred")

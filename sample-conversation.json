@@ -1,0 +1,24 @@
+{
+  "conversation": [
+    {
+      "role": "user",
+      "content": "What are the key components of a distributed system?"
+    },
+    {
+      "role": "assistant",
+      "content": "A distributed system typically consists of: 1) Multiple independent nodes/machines, 2) A communication network, 3) Consensus mechanisms, 4) Data replication strategies, and 5) Fault tolerance mechanisms. These work together to ensure reliability and scalability."
+    },
+    {
+      "role": "user",
+      "content": "Can you explain CAP theorem?"
+    },
+    {
+      "role": "assistant",
+      "content": "The CAP theorem states that a distributed system can guarantee at most two of three properties: Consistency (all nodes see the same data), Availability (system remains operational), and Partition tolerance (system survives network partitions). Most real systems choose CA or AP based on requirements."
+    },
+    {
+      "role": "user",
+      "content": "How do you handle Byzantine failures?"
+    }
+  ]
+}

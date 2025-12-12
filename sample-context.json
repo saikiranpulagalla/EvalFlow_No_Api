@@ -1,0 +1,34 @@
+[
+  {
+    "text": "Byzantine fault tolerance (BFT) is a property of distributed systems that can reach consensus even when some nodes are faulty or malicious. It uses cryptographic signatures and message broadcasting to ensure agreement.",
+    "source_url": "https://en.wikipedia.org/wiki/Byzantine_fault_tolerance"
+  },
+  {
+    "text": "Practical Byzantine Fault Tolerance (PBFT) is an algorithm that achieves BFT in asynchronous systems. It requires 3f+1 nodes to tolerate f faulty nodes and uses a three-phase commitment protocol.",
+    "source_url": "https://www.usenix.org/conference/nsdi-99/practical-byzantine-fault-tolerance"
+  },
+  {
+    "text": "Raft is a consensus algorithm designed for distributed systems that is more understandable than Paxos. It divides the problem into leader election, log replication, and safety, making it easier to implement correctly.",
+    "source_url": "https://raft.github.io/"
+  },
+  {
+    "text": "Two-Phase Commit (2PC) is a protocol that ensures all-or-nothing outcomes in distributed transactions. A coordinator sends prepare requests to all participants, then commits or aborts based on their responses.",
+    "source_url": "https://en.wikipedia.org/wiki/Two-phase_commit_protocol"
+  },
+  {
+    "text": "ACID properties (Atomicity, Consistency, Isolation, Durability) are crucial for database systems. In distributed systems, achieving all four properties simultaneously is challenging and often involves trade-offs.",
+    "source_url": "https://en.wikipedia.org/wiki/ACID"
+  },
+  {
+    "text": "The FLP impossibility result proves that no algorithm can guarantee consensus in an asynchronous distributed system where even one process might crash. This has profound implications for distributed system design.",
+    "source_url": "https://www.the-paper-trail.org/post/2008-08-13-a-brief-tour-of-flp-impossibility/"
+  },
+  {
+    "text": "Eventual consistency is a weaker consistency model used in distributed systems where updates are propagated asynchronously. Systems like Cassandra and DynamoDB use this model for high availability.",
+    "source_url": "https://www.allthingsdistributed.com/2008/12/eventually_consistent.html"
+  },
+  {
+    "text": "Quorum-based systems ensure consistency by requiring that reads and writes are acknowledged by a majority of nodes. This provides a middle ground between strong consistency and eventual consistency.",
+    "source_url": "https://en.wikipedia.org/wiki/Quorum_(distributed_systems)"
+  }
+]
